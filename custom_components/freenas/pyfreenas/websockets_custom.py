@@ -1,11 +1,10 @@
 import asyncio
 import ejson
 import functools
-import logging
 import uuid
 import websockets
 
-from typing import Any, Callable, TypeVar
+from typing import Any, Callable
 from websockets.client import WebSocketClientProtocol
 
 
@@ -31,7 +30,7 @@ class FreeNASWebSocketClientProtocol(WebSocketClientProtocol):
         if not result:
             raise websockets.exceptions.SecurityError(
                 'Unable to authenticate.')
-    
+
     async def invoke_method(self, method: str, params: [Any]) -> Any:
         async with self._method_lock:
             id = str(uuid.uuid4())
@@ -49,18 +48,3 @@ class FreeNASWebSocketClientProtocol(WebSocketClientProtocol):
 
 def freenas_auth_protocol_factory(username: str, password: str) -> Callable[[Any], FreeNASWebSocketClientProtocol]:
     return functools.partial(FreeNASWebSocketClientProtocol, username=username, password=password)
-
-
-T = TypeVar('T', bound='Controller')
-
-
-class Controller(object):
-    @classmethod
-    async def create(cls, host: str, password: str, username: str = 'root') -> T:
-        self = Controller()
-        self._client_lock = asyncio.Lock()
-        self._client = await websockets.connect(f"ws://{host}/websocket", create_protocol=freenas_auth_protocol_factory(username, password))
-        return self
-
-    async def refresh(self):
-        pass
