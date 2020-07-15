@@ -12,9 +12,27 @@ class Controller(object):
     @classmethod
     async def create(cls, host: str, password: str, username: str = 'root') -> T:
         self = Controller()
-        self._client_lock = asyncio.Lock()
         self._client = await websockets.connect(f"ws://{host}/websocket", create_protocol=freenas_auth_protocol_factory(username, password))
+        self._vms = []
         return self
 
     async def refresh(self):
-        pass
+        self._vms = await self._client.invoke_method(
+            'vm.query',
+            [
+                [],
+                {
+                    'select': [
+                        'id',
+                        'name',
+                        'description',
+                        'state',
+                    ],
+                },
+            ],
+        )
+
+    @property
+    def vms(self):
+        """Returns a list of virtual machines on the host."""
+        return self._vms
