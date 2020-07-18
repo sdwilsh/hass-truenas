@@ -47,7 +47,8 @@ class VirturalMachine(object):
             ],
         )
         if result:
-            self._controller._vms[self._id]["status"] = {"pid": None, "state": str(VirturalMachineState.STOPPED)}
+            self._controller._state["vms"][self._id]["status"] = {
+                "pid": None, "state": str(VirturalMachineState.STOPPED)}
         return result
 
     async def restart(self) -> bool:
@@ -78,4 +79,4 @@ class VirturalMachine(object):
     @property
     def _state(self) -> dict:
         """The state of the virtural machine, according to the Controller."""
-        return self._controller._vms[self._id]
+        return self._controller._state["vms"][self._id]
