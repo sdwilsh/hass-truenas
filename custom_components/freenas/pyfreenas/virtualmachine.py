@@ -14,9 +14,9 @@ class VirturalMachineState(Enum):
 
     @classmethod
     def fromValue(cls, value: str) -> TState:
-        if value == str(cls.STOPPED):
+        if value == cls.STOPPED.value:
             return cls.STOPPED
-        if value == str(cls.RUNNING):
+        if value == cls.RUNNING.value:
             return cls.RUNNING
         raise Exception(f"Unexpected virtural machine state '{value}'")
 

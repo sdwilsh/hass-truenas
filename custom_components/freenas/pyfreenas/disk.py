@@ -13,9 +13,9 @@ class DiskType(Enum):
 
     @classmethod
     def fromValue(cls, value: str) -> TType:
-        if value == str(cls.HDD):
+        if value == cls.HDD.value:
             return cls.HDD
-        if value == str(cls.SSD):
+        if value == cls.SSD.value:
             return cls.SSD
         raise Exception(f"Unexpected disk type '{value}'")
 
