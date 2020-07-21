@@ -3,13 +3,15 @@ import websockets
 
 from .disk import Disk
 from .virtualmachine import VirturalMachine
-from .websockets_custom import freenas_auth_protocol_factory
+from .websockets_custom import FreeNASWebSocketClientProtocol, freenas_auth_protocol_factory
 from typing import Any, Callable, Dict, List, TypeVar
 
 T = TypeVar('T', bound='Controller')
 
 
 class Controller(object):
+    _client: FreeNASWebSocketClientProtocol
+
     @classmethod
     async def create(cls, host: str, password: str, username: str = 'root') -> T:
         self = Controller()
