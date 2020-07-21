@@ -67,6 +67,11 @@ class VirturalMachine(object):
         return self._state["description"]
 
     @property
+    def id(self) -> int:
+        """The id of the virtural machine."""
+        return self._id
+
+    @property
     def name(self) -> str:
         """The name of the virtural machine."""
         return self._state["name"]
