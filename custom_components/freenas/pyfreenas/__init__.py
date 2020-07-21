@@ -16,6 +16,7 @@ class Controller(object):
     async def create(cls, host: str, password: str, username: str = 'root') -> T:
         self = Controller()
         self._client = await websockets.connect(f"ws://{host}/websocket", create_protocol=freenas_auth_protocol_factory(username, password))
+        self._info = await self._client.invoke_method("system.info")
         self._state = None
         self._disks = None
         self._vms = None
@@ -84,6 +85,10 @@ class Controller(object):
     def disks(self) -> List[Disk]:
         """Returns a list of disks attached to the host."""
         return self._disks
+
+    @property
+    def info(self) -> Dict[str, Any]:
+        return self._info
 
     @property
     def vms(self) -> List[VirturalMachine]:
