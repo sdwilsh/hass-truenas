@@ -1,19 +1,20 @@
 {
     "config": {
         "abort": {
-            "already_configured": "[%key:common::config_flow::abort::already_configured_device%]"
+            "already_configured": "Already Configured"
         },
         "error": {
-            "cannot_connect": "[%key:common::config_flow::error::cannot_connect%]",
-            "invalid_auth": "[%key:common::config_flow::error::invalid_auth%]",
-            "unknown": "[%key:common::config_flow::error::unknown%]"
+            "cannot_connect": "Cannot Connect",
+            "invalid_auth": "Invalid Auth",
+            "unknown": "Unknown Error"
         },
         "step": {
             "user": {
                 "data": {
-                    "host": "[%key:common::config_flow::data::host%]",
-                    "password": "[%key:common::config_flow::data::password%]",
-                    "username": "[%key:common::config_flow::data::username%]"
+                    "host": "Server Hostname or IP Address",
+                    "name": "Name of the Entity",
+                    "username": "Username",
+                    "password": "Password"
                 }
             }
         }
