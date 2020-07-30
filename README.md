@@ -1,4 +1,6 @@
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
+![hacs](https://github.com/sdwilsh/hass-freenas/workflows/hacs/badge.svg)
+![hassfest](https://github.com/sdwilsh/hass-freenas/workflows/hassfest/badge.svg)
 
 # FreeNAS Integration for Home Assistant
 
