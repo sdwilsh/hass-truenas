@@ -1,0 +1,23 @@
+{
+  "title": "FreeNAS",
+  "config": {
+    "step": {
+      "user": {
+        "data": {
+          "host": "Server Hostname or IP Address",
+          "name": "Name of the Entity",
+          "username": "Username",
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot Connect",
+      "invalid_auth": "Invalid Auth",
+      "unknown": "Unknown Error"
+    },
+    "abort": {
+      "already_configured": "Already Configured"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "domain": "freenas",
+  "name": "FreeNAS",
+  "config_flow": true,
+  "documentation": "https://github.com/sdwilsh/hass-freenas",
+  "requirements": ["websockets", "meteor-ejson"],
+  "ssdp": [],
+  "zeroconf": [],
+  "homekit": {},
+  "dependencies": [],
+  "codeowners": [
+    "@sdwilsh"
+  ]
+}

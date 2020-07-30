@@ -1,0 +1,26 @@
+vm_start:
+  description: Start a virtural machine
+  fields:
+    entity_id:
+      description: Sensor entity id for virtural machine
+      example: "binary_sensor.virtural_machine_name"
+    overcommit:
+      description: Start the virtural machine even if there is not enough memory available
+      example: False
+
+vm_stop:
+  description: Stop a virtural machine
+  fields:
+    entity_id:
+      description: Sensor entity id for virtural machine
+      example: "binary_sensor.virtural_machine_name"
+    force:
+      description: Perform a non-graceful shutdown
+      example: False
+
+vm_restart:
+  description: Restart a virtural machine
+  fields:
+    entity_id:
+      description: Sensor entity id for virtural machine
+      example: "binary_sensor.virtural_machine_name"
