@@ -89,7 +89,7 @@ class VirturalMachineIsRunningBinarySensor(
     @property
     def icon(self) -> str:
         """Return an icon for the virtural machine."""
-        return "mdi:laptop"
+        return "mdi:server"
 
     def _get_state(self) -> bool:
         """Returns the current state of the virtural machine."""
