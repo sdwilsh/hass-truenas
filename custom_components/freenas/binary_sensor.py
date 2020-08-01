@@ -15,7 +15,6 @@ from typing import Callable, List, Optional
 from . import (
     Controller,
     FreeNASBinarySensor,
-    FreeNASEntityType,
     FreeNASVirturalMachineEntity,
 )
 from .const import (
@@ -83,7 +82,7 @@ class VirturalMachineIsRunningBinarySensor(
     @property
     def unique_id(self) -> str:
         return slugify(
-            f"{self._entry.unique_id}-{FreeNASEntityType.VIRTURAL_MACHINE.value}-{self._vm.id}_binary_sensor",
+            f"{self._entry.unique_id}-{self._vm.id}_binary_sensor",
         )
 
     @property

@@ -155,12 +155,6 @@ class FreeNASBinarySensor(FreeNASEntity):
         return self._get_state()
 
 
-@unique
-class FreeNASEntityType(Enum):
-    DISK = "disk"
-    VIRTURAL_MACHINE = "virtural_machine"
-
-
 class FreeNASSensor(FreeNASEntity):
     """Define a generic FreeNAS sensor."""
 
@@ -191,12 +185,6 @@ class FreeNASDiskEntity:
             "model": self._disk.model,
         }
 
-    @property
-    def device_state_attributes(self) -> Optional[Dict[str, Any]]:
-        """Return device specific state attributes."""
-        attributes = {"freenas_type": FreeNASEntityType.DISK.value}
-        return attributes
-
 
 class FreeNASVirturalMachineEntity:
     """Represents a virtural machine on the FreeNAS host."""
@@ -213,12 +201,6 @@ class FreeNASVirturalMachineEntity:
         return {
             "name": self._vm.name,
         }
-
-    @property
-    def device_state_attributes(self) -> Optional[Dict[str, Any]]:
-        """Return device specific state attributes."""
-        attributes = {"freenas_type": FreeNASEntityType.VIRTURAL_MACHINE.value}
-        return attributes
 
     async def start(self, overcommit: bool = False) -> None:
         """Starts a Virtural Machine"""

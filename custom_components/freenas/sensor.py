@@ -15,7 +15,6 @@ from typing import Callable, List, Optional
 from . import (
     Controller,
     FreeNASSensor,
-    FreeNASEntityType,
     FreeNASDiskEntity,
 )
 from .const import (
@@ -69,7 +68,7 @@ class DiskTemperatureSensor(
     def unique_id(self) -> str:
         assert self._disk is not None
         return slugify(
-            f"{self._entry.unique_id}-{FreeNASEntityType.DISK.value}-{self._disk.name}_temperature_sensor",
+            f"{self._entry.unique_id}-{self._disk.serial}_temperature_sensor",
         )
 
     @property
