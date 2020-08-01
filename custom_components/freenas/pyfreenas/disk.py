@@ -23,41 +23,66 @@ class Disk(object):
     def __init__(self, controller: TController, name: str) -> None:
         self._controller = controller
         self._name = name
+        self._cached_state = self._state
+
+    @property
+    def available(self) -> bool:
+        """If the disk exists on the server."""
+        return self._name in self._controller._state["disks"]
 
     @property
     def description(self) -> str:
         """The description of the desk."""
-        return self._state["description"]
+        if self.available:
+            self._cached_state = self._state
+            return self._state["description"]
+        return self._cached_state["description"]
 
     @property
     def model(self) -> str:
         """The model of the disk."""
-        return self._state["model"]
+        if self.available:
+            self._cached_state = self._state
+            return self._state["model"]
+        return self._cached_state["model"]
 
     @property
     def name(self) -> str:
         """The name of the disk."""
-        return self._state["name"]
+        if self.available:
+            self._cached_state = self._state
+            return self._state["name"]
+        return self._cached_state["name"]
 
     @property
     def serial(self) -> str:
         """The serial of the disk."""
-        return self._state["serial"]
+        if self.available:
+            self._cached_state = self._state
+            return self._state["serial"]
+        return self._cached_state["serial"]
 
     @property
     def size(self) -> int:
         """The size of the disk."""
-        return self._state["size"]
+        if self.available:
+            self._cached_state = self._state
+            return self._state["size"]
+        return self._cached_state["size"]
 
     @property
     def temperature(self) -> int:
         """The temperature of the disk."""
+        assert self.available
         return self._state["temperature"]
 
     @property
     def type(self) -> DiskType:
         """The type of the desk."""
-        return DiskType.fromValue(self._state["type"])
+        if self.available:
+            self._cached_state = self._state
+            return DiskType.fromValue(self._state["type"])
+        return DiskType.fromValue(self._cached_state["type"])
 
     @property
     def _state(self) -> dict:

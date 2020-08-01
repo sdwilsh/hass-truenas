@@ -25,6 +25,7 @@ class VirturalMachine(object):
     def __init__(self, controller: TController, id: int) -> None:
         self._controller = controller
         self._id = id
+        self._cached_state = self._state
 
     async def start(self, overcommit: bool = False) -> bool:
         """Starts a stopped virtural machine."""
@@ -62,9 +63,17 @@ class VirturalMachine(object):
         return result
 
     @property
+    def available(self) -> bool:
+        """If the virtural machine exists on the server."""
+        return self._id in self._controller._state["vms"]
+
+    @property
     def description(self) -> str:
         """The description of the virtural machine."""
-        return self._state["description"]
+        if self.available:
+            self._cached_state = self._state
+            return self._state["description"]
+        return self._cached_state["description"]
 
     @property
     def id(self) -> int:
@@ -74,11 +83,15 @@ class VirturalMachine(object):
     @property
     def name(self) -> str:
         """The name of the virtural machine."""
-        return self._state["name"]
+        if self.available:
+            self._cached_state = self._state
+            return self._state["name"]
+        return self._cached_state["name"]
 
     @property
     def status(self) -> VirturalMachineState:
         """The status of the virtural machine."""
+        assert self.available
         return VirturalMachineState.fromValue(self._state["status"]["state"])
 
     @property

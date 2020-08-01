@@ -10,7 +10,7 @@ from .pyfreenas.virtualmachine import (
     VirturalMachine,
     VirturalMachineState,
 )
-from typing import Callable, List
+from typing import Callable, List, Optional
 
 from . import (
     Controller,
@@ -91,6 +91,8 @@ class VirturalMachineIsRunningBinarySensor(
         """Return an icon for the virtural machine."""
         return "mdi:server"
 
-    def _get_state(self) -> bool:
+    def _get_state(self) -> Optional[bool]:
         """Returns the current state of the virtural machine."""
-        return self._vm.status == VirturalMachineState.RUNNING
+        if self._vm.available:
+            return self._vm.status == VirturalMachineState.RUNNING
+        return None

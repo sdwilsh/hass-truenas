@@ -10,7 +10,7 @@ from .pyfreenas.disk import (
     Disk,
     DiskType,
 )
-from typing import Callable, List
+from typing import Callable, List, Optional
 
 from . import (
     Controller,
@@ -85,7 +85,8 @@ class DiskTemperatureSensor(
     def unit_of_measurement(self):
         return TEMP_CELSIUS
 
-    def _get_state(self) -> int:
+    def _get_state(self) -> Optional[int]:
         """Returns the current temperature of the disk."""
-        assert self._disk is not None
-        return self._disk.temperature
+        if self.available:
+            return self._disk.temperature
+        return None

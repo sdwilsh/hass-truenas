@@ -150,7 +150,7 @@ class FreeNASBinarySensor(FreeNASEntity):
     """Define a generic FreeNAS binary sensor."""
 
     @property
-    def is_on(self) -> bool:
+    def is_on(self) -> Optional[bool]:
         """Return true if the binary sensor is on."""
         return self._get_state()
 
@@ -165,7 +165,7 @@ class FreeNASSensor(FreeNASEntity):
     """Define a generic FreeNAS sensor."""
 
     @property
-    def state(self):
+    def state(self) -> any:
         """Return the state of the sensor."""
         return self._get_state()
 
@@ -174,6 +174,11 @@ class FreeNASDiskEntity:
     """Represents a disk on the FreeNAS host."""
 
     _disk: Optional[Disk] = None
+
+    @property
+    def available(self) -> bool:
+        assert self._disk is not None
+        return self._disk.available
 
     @property
     def device_info(self):
@@ -199,6 +204,10 @@ class FreeNASVirturalMachineEntity:
     _vm: Optional[VirturalMachine] = None
 
     @property
+    def available(self) -> bool:
+        return self._vm.available
+
+    @property
     def device_info(self):
         assert self._vm is not None
         return {
@@ -213,15 +222,15 @@ class FreeNASVirturalMachineEntity:
 
     async def start(self, overcommit: bool = False) -> None:
         """Starts a Virtural Machine"""
-        assert self._vm is not None
+        assert self.available
         await self._vm.start(overcommit=overcommit)
 
     async def stop(self, force: bool = False) -> None:
         """Starts a Virtural Machine"""
-        assert self._vm is not None
+        assert self.available
         await self._vm.stop(force=force)
 
     async def restart(self) -> None:
         """Starts a Virtural Machine"""
-        assert self._vm is not None
+        assert self.available
         await self._vm.restart()
