@@ -25,3 +25,16 @@
 ### freenas.vm_stop
 
 ### freenas.vm_restart
+
+## Development
+
+```
+python3.8 -m venv .venv
+source .venv/bin/activate
+
+# Install Dev Requirements
+pip install -r requirements-dev.txt
+
+# One-Time Install of Commit Hooks
+pre-commit install
+```
