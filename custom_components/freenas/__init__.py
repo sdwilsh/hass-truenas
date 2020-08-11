@@ -6,7 +6,9 @@ import logging
 
 import voluptuous as vol
 
-from .pyfreenas import Controller, Disk, VirturalMachine
+from pyfreenas import Machine
+from pyfreenas.disk import Disk
+from pyfreenas.virtualmachine import VirturalMachine
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_SCAN_INTERVAL
@@ -49,17 +51,17 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     host = entry.data.get(CONF_HOST)
     password = entry.data.get(CONF_PASSWORD)
     try:
-        controller = await Controller.create(host, password)
+        machine = await Machine.create(host, password)
 
         async def async_update_data():
             """Fetch data from the FreeNAS machine."""
             _LOGGER.debug("refreshing data")
             async with async_timeout.timeout(TIMEOUT):
                 try:
-                    await controller.refresh()
+                    await machine.refresh()
                 except Exception as exc:
                     raise UpdateFailed("Error fetching FreeNAS state") from exc
-                return controller._state
+                return machine._state
 
         scan_interval = entry.options.get(
             CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL_SECONDS)
@@ -76,7 +78,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
         hass.data[DOMAIN][entry.entry_id] = {
             "coordinator": coordinator,
-            "controller": controller,
+            "machine": machine,
         }
     except WebSocketException as exc:
         _LOGGER.error(f"Unable to connect to FreeNAS machine: {exc}")
@@ -102,7 +104,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         )
     )
     if unload_ok:
-        await hass.data[DOMAIN]["controller"]._client.close()
+        await hass.data[DOMAIN]["machine"]._client.close()
         hass.data[DOMAIN].pop(entry.entry_id)
 
     return unload_ok
@@ -122,9 +124,9 @@ class FreeNASEntity(RestoreEntity):
         raise NotImplementedError
 
     @property
-    def controller(self) -> Controller:
+    def machine(self) -> Machine:
         assert self.hass is not None
-        return self.hass.data[DOMAIN][self._entry.entry_id]["controller"]
+        return self.hass.data[DOMAIN][self._entry.entry_id]["machine"]
 
     @property
     def should_poll(self):

@@ -3,7 +3,7 @@
   "name": "FreeNAS",
   "config_flow": true,
   "documentation": "https://github.com/sdwilsh/hass-freenas",
-  "requirements": ["websockets", "meteor-ejson"],
+  "requirements": ["pyfreenas==0.1.0"],
   "ssdp": [],
   "zeroconf": [],
   "homekit": {},

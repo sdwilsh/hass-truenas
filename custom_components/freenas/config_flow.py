@@ -10,7 +10,7 @@ from homeassistant.const import (
     CONF_PASSWORD,
     CONF_USERNAME,
 )
-from .pyfreenas import Controller
+from pyfreenas import Machine
 from websockets.exceptions import InvalidURI, SecurityError
 
 from .const import DOMAIN  # pylint:disable=unused-import
@@ -33,7 +33,7 @@ async def validate_input(hass: core.HomeAssistant, data):
     Data has the keys from DATA_SCHEMA with values provided by the user.
     """
     try:
-        controller = await Controller.create(
+        machine = await Machine.create(
             host=data[CONF_HOST],
             password=data[CONF_PASSWORD],
             username=data[CONF_USERNAME],
@@ -44,7 +44,7 @@ async def validate_input(hass: core.HomeAssistant, data):
         raise CannotConnect
 
     return {
-        "hostname": controller.info["hostname"],
+        "hostname": machine.info["hostname"],
     }
 
 

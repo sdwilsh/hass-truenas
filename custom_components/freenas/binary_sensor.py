@@ -6,14 +6,14 @@ from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.util import slugify
 
-from .pyfreenas.virtualmachine import (
+from pyfreenas import Machine
+from pyfreenas.virtualmachine import (
     VirturalMachine,
     VirturalMachineState,
 )
 from typing import Callable, List, Optional
 
 from . import (
-    Controller,
     FreeNASBinarySensor,
     FreeNASVirturalMachineEntity,
 )
@@ -47,20 +47,20 @@ async def async_setup_entry(
     )
 
 
-def _get_controller(hass: HomeAssistant, entry: dict) -> Controller:
-    controller = hass.data[DOMAIN][entry.entry_id]["controller"]
-    assert controller is not None
-    return controller
+def _get_machine(hass: HomeAssistant, entry: dict) -> Machine:
+    machine = hass.data[DOMAIN][entry.entry_id]["machine"]
+    assert machine is not None
+    return machine
 
 
 def _create_entities(hass: HomeAssistant, entry: dict) -> List[Entity]:
     entities = []
 
-    controller = _get_controller(hass, entry)
+    machine = _get_machine(hass, entry)
     coordinator = hass.data[DOMAIN][entry.entry_id]["coordinator"]
     name = entry.data[CONF_NAME]
 
-    for vm in controller.vms:
+    for vm in machine.vms:
         entities.append(VirturalMachineIsRunningBinarySensor(
             entry, name, vm, coordinator))
 
