@@ -61,8 +61,9 @@ def _create_entities(hass: HomeAssistant, entry: dict) -> List[Entity]:
     name = entry.data[CONF_NAME]
 
     for vm in machine.vms:
-        entities.append(VirturalMachineIsRunningBinarySensor(
-            entry, name, vm, coordinator))
+        entities.append(
+            VirturalMachineIsRunningBinarySensor(entry, name, vm, coordinator)
+        )
 
     return entities
 
@@ -70,7 +71,13 @@ def _create_entities(hass: HomeAssistant, entry: dict) -> List[Entity]:
 class VirturalMachineIsRunningBinarySensor(
     FreeNASVirturalMachineEntity, FreeNASBinarySensor, BinarySensorEntity
 ):
-    def __init__(self, entry: dict, name: str, virtural_machine: VirturalMachine, coordinator: DataUpdateCoordinator) -> None:
+    def __init__(
+        self,
+        entry: dict,
+        name: str,
+        virtural_machine: VirturalMachine,
+        coordinator: DataUpdateCoordinator,
+    ) -> None:
         self._vm = virtural_machine
         super().__init__(entry, name, coordinator)
 
@@ -81,9 +88,7 @@ class VirturalMachineIsRunningBinarySensor(
 
     @property
     def unique_id(self) -> str:
-        return slugify(
-            f"{self._entry.unique_id}-{self._vm.id}_binary_sensor",
-        )
+        return slugify(f"{self._entry.unique_id}-{self._vm.id}_binary_sensor",)
 
     @property
     def icon(self) -> str:

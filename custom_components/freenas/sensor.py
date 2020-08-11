@@ -17,9 +17,7 @@ from . import (
     FreeNASSensor,
     FreeNASDiskEntity,
 )
-from .const import (
-    DOMAIN,
-)
+from .const import DOMAIN
 
 
 async def async_setup_entry(
@@ -28,6 +26,7 @@ async def async_setup_entry(
     """Set up the FreeNAS switches."""
     entities = _create_entities(hass, entry)
     async_add_entities(entities)
+
 
 def _get_machine(hass: HomeAssistant, entry: dict) -> Machine:
     machine = hass.data[DOMAIN][entry.entry_id]["machine"]
@@ -43,18 +42,17 @@ def _create_entities(hass: HomeAssistant, entry: dict) -> List[Entity]:
     name = entry.data[CONF_NAME]
 
     for disk in machine.disks:
-        entities.append(DiskTemperatureSensor(
-            entry, name, disk, coordinator))
+        entities.append(DiskTemperatureSensor(entry, name, disk, coordinator))
 
     return entities
 
 
-class DiskTemperatureSensor(
-    FreeNASDiskEntity, FreeNASSensor, Entity
-):
+class DiskTemperatureSensor(FreeNASDiskEntity, FreeNASSensor, Entity):
     _disk: Disk
 
-    def __init__(self, entry: dict, name: str, disk: Disk, coordinator: DataUpdateCoordinator) -> None:
+    def __init__(
+        self, entry: dict, name: str, disk: Disk, coordinator: DataUpdateCoordinator
+    ) -> None:
         self._disk = disk
         super().__init__(entry, name, coordinator)
 

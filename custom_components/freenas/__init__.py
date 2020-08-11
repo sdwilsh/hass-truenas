@@ -64,7 +64,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                 return machine._state
 
         scan_interval = entry.options.get(
-            CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL_SECONDS)
+            CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL_SECONDS
+        )
         coordinator = DataUpdateCoordinator(
             hass,
             _LOGGER,
@@ -97,8 +98,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     unload_ok = all(
         await asyncio.gather(
             *[
-                hass.config_entries.async_forward_entry_unload(
-                    entry, component)
+                hass.config_entries.async_forward_entry_unload(entry, component)
                 for component in PLATFORMS
             ]
         )
@@ -113,7 +113,9 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 class FreeNASEntity(RestoreEntity):
     """Define a generic FreeNAS entity."""
 
-    def __init__(self, entry: dict, name: str, coordinator: DataUpdateCoordinator) -> None:
+    def __init__(
+        self, entry: dict, name: str, coordinator: DataUpdateCoordinator
+    ) -> None:
         self._coordinator = coordinator
         self._entry = entry
         self._name = name
@@ -180,9 +182,7 @@ class FreeNASDiskEntity:
     def device_info(self):
         assert self._disk is not None
         return {
-            "identifiers": {
-                (DOMAIN, slugify(self._disk.serial)),
-            },
+            "identifiers": {(DOMAIN, slugify(self._disk.serial)),},
             "name": self._disk.name,
             "model": self._disk.model,
         }
