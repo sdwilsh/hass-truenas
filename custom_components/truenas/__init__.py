@@ -1,4 +1,4 @@
-"""The FreeNAS integration."""
+"""The TrueNAS integration."""
 import abc
 import asyncio
 import async_timeout
@@ -6,9 +6,9 @@ import logging
 
 import voluptuous as vol
 
-from pyfreenas import Machine
-from pyfreenas.disk import Disk
-from pyfreenas.virtualmachine import VirturalMachine
+from aiotruenas_client import CachingMachine as Machine
+from aiotruenas_client.disk import Disk
+from aiotruenas_client.virtualmachine import VirtualMachine
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_SCAN_INTERVAL
@@ -40,12 +40,12 @@ TIMEOUT = 10
 
 
 async def async_setup(hass: HomeAssistant, config: dict) -> bool:
-    """Set up the FreeNAS component."""
+    """Set up the TrueNAS component."""
     return True
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Set up FreeNAS from a config entry."""
+    """Set up TrueNAS from a config entry."""
     hass.data.setdefault(DOMAIN, {})
 
     host = entry.data.get(CONF_HOST)
@@ -54,13 +54,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         machine = await Machine.create(host, password)
 
         async def async_update_data():
-            """Fetch data from the FreeNAS machine."""
+            """Fetch data from the TrueNAS machine."""
             _LOGGER.debug("refreshing data")
             async with async_timeout.timeout(TIMEOUT):
                 try:
                     await machine.refresh()
                 except Exception as exc:
-                    raise UpdateFailed("Error fetching FreeNAS state") from exc
+                    raise UpdateFailed("Error fetching TrueNAS state") from exc
                 return machine._state
 
         scan_interval = entry.options.get(
@@ -69,7 +69,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         coordinator = DataUpdateCoordinator(
             hass,
             _LOGGER,
-            name="FreeNAS resource status",
+            name="TrueNAS resource status",
             update_method=async_update_data,
             update_interval=timedelta(seconds=scan_interval),
         )
@@ -82,7 +82,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             "machine": machine,
         }
     except WebSocketException as exc:
-        _LOGGER.error(f"Unable to connect to FreeNAS machine: {exc}")
+        _LOGGER.error(f"Unable to connect to TrueNAS machine: {exc}")
         raise ConfigEntryNotReady
 
     for component in PLATFORMS:
@@ -110,8 +110,8 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     return unload_ok
 
 
-class FreeNASEntity(RestoreEntity):
-    """Define a generic FreeNAS entity."""
+class TrueNASEntity(RestoreEntity):
+    """Define a generic TrueNAS entity."""
 
     def __init__(
         self, entry: dict, name: str, coordinator: DataUpdateCoordinator
@@ -150,8 +150,8 @@ class FreeNASEntity(RestoreEntity):
         await self._coordinator.async_request_refresh()
 
 
-class FreeNASBinarySensor(FreeNASEntity):
-    """Define a generic FreeNAS binary sensor."""
+class TrueNASBinarySensor(TrueNASEntity):
+    """Define a generic TrueNAS binary sensor."""
 
     @property
     def is_on(self) -> Optional[bool]:
@@ -159,8 +159,8 @@ class FreeNASBinarySensor(FreeNASEntity):
         return self._get_state()
 
 
-class FreeNASSensor(FreeNASEntity):
-    """Define a generic FreeNAS sensor."""
+class TrueNASSensor(TrueNASEntity):
+    """Define a generic TrueNAS sensor."""
 
     @property
     def state(self) -> any:
@@ -168,8 +168,8 @@ class FreeNASSensor(FreeNASEntity):
         return self._get_state()
 
 
-class FreeNASDiskEntity:
-    """Represents a disk on the FreeNAS host."""
+class TrueNASDiskEntity:
+    """Represents a disk on the TrueNAS host."""
 
     _disk: Optional[Disk] = None
 
@@ -188,10 +188,10 @@ class FreeNASDiskEntity:
         }
 
 
-class FreeNASVirturalMachineEntity:
-    """Represents a virtural machine on the FreeNAS host."""
+class TrueNASVirtualMachineEntity:
+    """Represents a virtual machine on the TrueNAS host."""
 
-    _vm: Optional[VirturalMachine] = None
+    _vm: Optional[VirtualMachine] = None
 
     @property
     def available(self) -> bool:
@@ -205,16 +205,16 @@ class FreeNASVirturalMachineEntity:
         }
 
     async def start(self, overcommit: bool = False) -> None:
-        """Starts a Virtural Machine"""
+        """Starts a Virtual Machine"""
         assert self.available
         await self._vm.start(overcommit=overcommit)
 
     async def stop(self, force: bool = False) -> None:
-        """Starts a Virtural Machine"""
+        """Starts a Virtual Machine"""
         assert self.available
         await self._vm.stop(force=force)
 
     async def restart(self) -> None:
-        """Starts a Virtural Machine"""
+        """Starts a Virtual Machine"""
         assert self.available
         await self._vm.restart()

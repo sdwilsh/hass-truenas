@@ -2,7 +2,7 @@
 import voluptuous as vol
 from homeassistant.helpers import config_validation as cv
 
-DOMAIN = "freenas"
+DOMAIN = "truenas"
 
 DEFAULT_SCAN_INTERVAL_SECONDS = 30
 

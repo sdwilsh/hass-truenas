@@ -1,6 +1,13 @@
 {
-  "title": "FreeNAS",
   "config": {
+    "abort": {
+      "already_configured": "Already Configured"
+    },
+    "error": {
+      "cannot_connect": "Cannot Connect",
+      "invalid_auth": "Invalid Auth",
+      "unknown": "Unknown Error"
+    },
     "step": {
       "user": {
         "data": {
@@ -10,14 +17,7 @@
           "password": "Password"
         }
       }
-    },
-    "error": {
-      "cannot_connect": "Cannot Connect",
-      "invalid_auth": "Invalid Auth",
-      "unknown": "Unknown Error"
-    },
-    "abort": {
-      "already_configured": "Already Configured"
     }
-  }
+  },
+  "title": "TrueNAS"
 }

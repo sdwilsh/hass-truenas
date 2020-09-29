@@ -1,0 +1,12 @@
+{
+  "domain": "truenas",
+  "name": "TrueNAS",
+  "config_flow": true,
+  "documentation": "https://github.com/sdwilsh/hass-truenas",
+  "requirements": ["aiotruenas-client==0.1.0"],
+  "ssdp": [],
+  "zeroconf": [],
+  "homekit": {},
+  "dependencies": [],
+  "codeowners": ["@sdwilsh"]
+}

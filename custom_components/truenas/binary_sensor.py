@@ -6,16 +6,16 @@ from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.util import slugify
 
-from pyfreenas import Machine
-from pyfreenas.virtualmachine import (
-    VirturalMachine,
-    VirturalMachineState,
+from aiotruenas_client import CachingMachine as Machine
+from aiotruenas_client.virtualmachine import (
+    VirtualMachine,
+    VirtualMachineState,
 )
 from typing import Callable, List, Optional
 
 from . import (
-    FreeNASBinarySensor,
-    FreeNASVirturalMachineEntity,
+    TrueNASBinarySensor,
+    TrueNASVirtualMachineEntity,
 )
 from .const import (
     DOMAIN,
@@ -31,7 +31,7 @@ from .const import (
 async def async_setup_entry(
     hass: HomeAssistant, entry: dict, async_add_entities: Callable,
 ):
-    """Set up the FreeNAS switches."""
+    """Set up the TrueNAS switches."""
     entities = _create_entities(hass, entry)
     async_add_entities(entities)
 
@@ -69,13 +69,13 @@ def _create_entities(hass: HomeAssistant, entry: dict) -> List[Entity]:
 
 
 class VirturalMachineIsRunningBinarySensor(
-    FreeNASVirturalMachineEntity, FreeNASBinarySensor, BinarySensorEntity
+    TrueNASVirtualMachineEntity, TrueNASBinarySensor, BinarySensorEntity
 ):
     def __init__(
         self,
         entry: dict,
         name: str,
-        virtural_machine: VirturalMachine,
+        virtural_machine: VirtualMachine,
         coordinator: DataUpdateCoordinator,
     ) -> None:
         self._vm = virtural_machine
@@ -98,5 +98,5 @@ class VirturalMachineIsRunningBinarySensor(
     def _get_state(self) -> Optional[bool]:
         """Returns the current state of the virtural machine."""
         if self._vm.available:
-            return self._vm.status == VirturalMachineState.RUNNING
+            return self._vm.status == VirtualMachineState.RUNNING
         return None

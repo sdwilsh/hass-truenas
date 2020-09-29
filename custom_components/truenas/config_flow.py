@@ -1,4 +1,4 @@
-"""Config flow for FreeNAS integration."""
+"""Config flow for TrueNAS integration."""
 import logging
 
 import voluptuous as vol
@@ -10,7 +10,7 @@ from homeassistant.const import (
     CONF_PASSWORD,
     CONF_USERNAME,
 )
-from pyfreenas import Machine
+from aiotruenas_client import CachingMachine as Machine
 from websockets.exceptions import InvalidURI, SecurityError
 
 from .const import DOMAIN  # pylint:disable=unused-import
@@ -20,7 +20,7 @@ _LOGGER = logging.getLogger(__name__)
 DATA_SCHEMA = vol.Schema(
     {
         vol.Required(CONF_HOST): str,
-        vol.Optional(CONF_NAME, default="FreeNAS"): str,
+        vol.Optional(CONF_NAME, default="TrueNAS"): str,
         vol.Required(CONF_USERNAME): str,
         vol.Required(CONF_PASSWORD): str,
     },
