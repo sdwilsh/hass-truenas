@@ -43,8 +43,9 @@ async def validate_input(hass: core.HomeAssistant, data):
     except InvalidURI:
         raise CannotConnect
 
+    info = await machine.get_system_info()
     return {
-        "hostname": machine.info["hostname"],
+        "hostname": info["hostname"],
     }
 
 
