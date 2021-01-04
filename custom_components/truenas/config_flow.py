@@ -1,5 +1,6 @@
 """Config flow for TrueNAS integration."""
 import logging
+from typing import Dict
 
 import voluptuous as vol
 from aiotruenas_client import CachingMachine as Machine
@@ -21,7 +22,7 @@ DATA_SCHEMA = vol.Schema(
 )
 
 
-async def validate_input(hass: core.HomeAssistant, data):
+async def validate_input(hass: core.HomeAssistant, data) -> Dict:
     """Validate the user input allows us to connect.
 
     Data has the keys from DATA_SCHEMA with values provided by the user.
@@ -32,10 +33,10 @@ async def validate_input(hass: core.HomeAssistant, data):
             password=data[CONF_PASSWORD],
             username=data[CONF_USERNAME],
         )
-    except SecurityError:
-        raise InvalidAuth
-    except InvalidURI:
-        raise CannotConnect
+    except SecurityError as exc:
+        raise InvalidAuth from exc
+    except InvalidURI as exc:
+        raise CannotConnect from exc
 
     info = await machine.get_system_info()
     return {

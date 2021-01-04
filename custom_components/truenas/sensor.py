@@ -1,5 +1,7 @@
 from typing import Callable, List, Optional
 
+from aiotruenas_client import CachingMachine as Machine
+from aiotruenas_client.disk import Disk, DiskType
 from homeassistant.components.sensor import DEVICE_CLASS_TEMPERATURE
 from homeassistant.const import CONF_NAME, TEMP_CELSIUS
 from homeassistant.core import HomeAssistant
@@ -7,10 +9,8 @@ from homeassistant.helpers import entity_platform
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.util import slugify
-from pyfreenas import Machine
-from pyfreenas.disk import Disk, DiskType
 
-from . import FreeNASDiskEntity, FreeNASSensor
+from . import TrueNASDiskEntity, TrueNASSensor
 from .const import DOMAIN
 
 
@@ -19,7 +19,7 @@ async def async_setup_entry(
     entry: dict,
     async_add_entities: Callable,
 ):
-    """Set up the FreeNAS switches."""
+    """Set up the TrueNAS switches."""
     entities = _create_entities(hass, entry)
     async_add_entities(entities)
 
@@ -43,7 +43,7 @@ def _create_entities(hass: HomeAssistant, entry: dict) -> List[Entity]:
     return entities
 
 
-class DiskTemperatureSensor(FreeNASDiskEntity, FreeNASSensor, Entity):
+class DiskTemperatureSensor(TrueNASDiskEntity, TrueNASSensor, Entity):
     _disk: Disk
 
     def __init__(
