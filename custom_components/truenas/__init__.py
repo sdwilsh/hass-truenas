@@ -12,7 +12,12 @@ from aiotruenas_client import CachingMachine as Machine
 from aiotruenas_client.disk import Disk
 from aiotruenas_client.virtualmachine import VirtualMachine
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_SCAN_INTERVAL
+from homeassistant.const import (
+    CONF_HOST,
+    CONF_PASSWORD,
+    CONF_SCAN_INTERVAL,
+    CONF_USERNAME,
+)
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.restore_state import RestoreEntity
@@ -44,8 +49,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     host = entry.data.get(CONF_HOST)
     password = entry.data.get(CONF_PASSWORD)
+    username = entry.data.get(CONF_USERNAME)
     try:
-        machine = await Machine.create(host, password)
+        machine = await Machine.create(
+            host=host,
+            password=password,
+            username=username,
+        )
 
         async def async_update_data():
             """Fetch data from the TrueNAS machine."""
