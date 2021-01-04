@@ -56,7 +56,7 @@ class DiskTemperatureSensor(TrueNASDiskEntity, TrueNASSensor, Entity):
     def name(self) -> str:
         """Return the name of the disk."""
         assert self._disk is not None
-        return f"{self._disk.name} Disk Temperature"
+        return f"Disk {self._disk.serial} Temperature"
 
     @property
     def unique_id(self) -> str:
