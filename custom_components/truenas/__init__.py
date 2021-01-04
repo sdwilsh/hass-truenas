@@ -62,10 +62,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             _LOGGER.debug("refreshing data")
             async with async_timeout.timeout(TIMEOUT):
                 try:
-                    await machine.refresh()
+                    await asyncio.gather(
+                        machine.get_disks(),
+                        machine.get_vms(),
+                    )
                 except Exception as exc:
                     raise UpdateFailed("Error fetching TrueNAS state") from exc
-                return machine._state
 
         scan_interval = entry.options.get(
             CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL_SECONDS
