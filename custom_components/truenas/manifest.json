@@ -3,7 +3,7 @@
   "name": "TrueNAS",
   "config_flow": true,
   "documentation": "https://github.com/sdwilsh/hass-truenas",
-  "requirements": ["aiotruenas-client==0.2.2"],
+  "requirements": ["aiotruenas-client==0.3.0"],
   "ssdp": [],
   "zeroconf": [],
   "homekit": {},
