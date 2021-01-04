@@ -63,7 +63,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             async with async_timeout.timeout(TIMEOUT):
                 try:
                     await asyncio.gather(
-                        machine.get_disks(),
+                        machine.get_disks(include_temperature=True),
                         machine.get_vms(),
                     )
                 except Exception as exc:
