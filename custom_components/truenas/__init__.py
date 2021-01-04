@@ -1,15 +1,16 @@
 """The TrueNAS integration."""
 import abc
 import asyncio
-import async_timeout
 import logging
+from datetime import timedelta
+from enum import Enum, unique
+from typing import Any, Dict, Optional
 
+import async_timeout
 import voluptuous as vol
-
 from aiotruenas_client import CachingMachine as Machine
 from aiotruenas_client.disk import Disk
 from aiotruenas_client.virtualmachine import VirtualMachine
-
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_SCAN_INTERVAL
 from homeassistant.core import HomeAssistant
@@ -17,16 +18,9 @@ from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.restore_state import RestoreEntity
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from homeassistant.util import slugify
-
-from datetime import timedelta
-from enum import Enum, unique
-from typing import Any, Dict, Optional
 from websockets.exceptions import WebSocketException
 
-from .const import (
-    DEFAULT_SCAN_INTERVAL_SECONDS,
-    DOMAIN,
-)
+from .const import DEFAULT_SCAN_INTERVAL_SECONDS, DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -182,7 +176,9 @@ class TrueNASDiskEntity:
     def device_info(self):
         assert self._disk is not None
         return {
-            "identifiers": {(DOMAIN, slugify(self._disk.serial)),},
+            "identifiers": {
+                (DOMAIN, slugify(self._disk.serial)),
+            },
             "name": self._disk.name,
             "model": self._disk.model,
         }

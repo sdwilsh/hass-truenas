@@ -1,22 +1,16 @@
+from typing import Callable, List, Optional
+
+from aiotruenas_client import CachingMachine as Machine
+from aiotruenas_client.virtualmachine import VirtualMachine, VirtualMachineState
+from homeassistant.components.binary_sensor import BinarySensorEntity
 from homeassistant.const import CONF_NAME
 from homeassistant.core import HomeAssistant
-from homeassistant.components.binary_sensor import BinarySensorEntity
 from homeassistant.helpers import entity_platform
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.util import slugify
 
-from aiotruenas_client import CachingMachine as Machine
-from aiotruenas_client.virtualmachine import (
-    VirtualMachine,
-    VirtualMachineState,
-)
-from typing import Callable, List, Optional
-
-from . import (
-    TrueNASBinarySensor,
-    TrueNASVirtualMachineEntity,
-)
+from . import TrueNASBinarySensor, TrueNASVirtualMachineEntity
 from .const import (
     DOMAIN,
     SCHEMA_SERVICE_VM_RESTART,
@@ -29,7 +23,9 @@ from .const import (
 
 
 async def async_setup_entry(
-    hass: HomeAssistant, entry: dict, async_add_entities: Callable,
+    hass: HomeAssistant,
+    entry: dict,
+    async_add_entities: Callable,
 ):
     """Set up the TrueNAS switches."""
     entities = _create_entities(hass, entry)
@@ -37,13 +33,19 @@ async def async_setup_entry(
 
     platform = entity_platform.current_platform.get()
     platform.async_register_entity_service(
-        SERVICE_VM_START, SCHEMA_SERVICE_VM_START, "start",
+        SERVICE_VM_START,
+        SCHEMA_SERVICE_VM_START,
+        "start",
     )
     platform.async_register_entity_service(
-        SERVICE_VM_STOP, SCHEMA_SERVICE_VM_STOP, "stop",
+        SERVICE_VM_STOP,
+        SCHEMA_SERVICE_VM_STOP,
+        "stop",
     )
     platform.async_register_entity_service(
-        SERVICE_VM_RESTART, SCHEMA_SERVICE_VM_RESTART, "restart",
+        SERVICE_VM_RESTART,
+        SCHEMA_SERVICE_VM_RESTART,
+        "restart",
     )
 
 
@@ -88,7 +90,9 @@ class VirturalMachineIsRunningBinarySensor(
 
     @property
     def unique_id(self) -> str:
-        return slugify(f"{self._entry.unique_id}-{self._vm.id}_binary_sensor",)
+        return slugify(
+            f"{self._entry.unique_id}-{self._vm.id}_binary_sensor",
+        )
 
     @property
     def icon(self) -> str:
