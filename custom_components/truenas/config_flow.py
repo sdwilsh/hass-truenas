@@ -2,15 +2,9 @@
 import logging
 
 import voluptuous as vol
-
-from homeassistant import config_entries, core, exceptions
-from homeassistant.const import (
-    CONF_HOST,
-    CONF_NAME,
-    CONF_PASSWORD,
-    CONF_USERNAME,
-)
 from aiotruenas_client import CachingMachine as Machine
+from homeassistant import config_entries, core, exceptions
+from homeassistant.const import CONF_HOST, CONF_NAME, CONF_PASSWORD, CONF_USERNAME
 from websockets.exceptions import InvalidURI, SecurityError
 
 from .const import DOMAIN  # pylint:disable=unused-import

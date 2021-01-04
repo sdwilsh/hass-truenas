@@ -29,7 +29,7 @@
 ## Development
 
 ```
-python3.8 -m venv .venv
+python3.9 -m venv .venv
 source .venv/bin/activate
 
 # Install Dev Requirements

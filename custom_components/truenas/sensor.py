@@ -1,27 +1,23 @@
-from homeassistant.const import CONF_NAME, TEMP_CELSIUS
+from typing import Callable, List, Optional
+
 from homeassistant.components.sensor import DEVICE_CLASS_TEMPERATURE
+from homeassistant.const import CONF_NAME, TEMP_CELSIUS
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import entity_platform
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.util import slugify
-
 from pyfreenas import Machine
-from pyfreenas.disk import (
-    Disk,
-    DiskType,
-)
-from typing import Callable, List, Optional
+from pyfreenas.disk import Disk, DiskType
 
-from . import (
-    FreeNASSensor,
-    FreeNASDiskEntity,
-)
+from . import FreeNASDiskEntity, FreeNASSensor
 from .const import DOMAIN
 
 
 async def async_setup_entry(
-    hass: HomeAssistant, entry: dict, async_add_entities: Callable,
+    hass: HomeAssistant,
+    entry: dict,
+    async_add_entities: Callable,
 ):
     """Set up the FreeNAS switches."""
     entities = _create_entities(hass, entry)
