@@ -4,6 +4,7 @@ from unittest.mock import patch
 from custom_components.truenas.config_flow import CannotConnect, InvalidAuth
 from custom_components.truenas.const import DOMAIN
 from homeassistant import config_entries, setup
+from websockets.exceptions import InvalidURI, SecurityError
 
 
 async def test_form(hass):
@@ -58,7 +59,7 @@ async def test_form_invalid_auth(hass):
 
     with patch(
         "custom_components.truenas.config_flow.Machine.create",
-        side_effect=InvalidAuth,
+        side_effect=SecurityError,
     ):
         result2 = await hass.config_entries.flow.async_configure(
             result["flow_id"],
@@ -81,7 +82,7 @@ async def test_form_cannot_connect(hass):
 
     with patch(
         "custom_components.truenas.config_flow.Machine.create",
-        side_effect=CannotConnect,
+        side_effect=InvalidURI("invalid_uri"),
     ):
         result2 = await hass.config_entries.flow.async_configure(
             result["flow_id"],
