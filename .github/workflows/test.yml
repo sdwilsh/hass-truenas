@@ -14,4 +14,4 @@ jobs:
         with:
           python-version: "3.8"
       - run: python3 -m pip install -r requirements-dev.txt
-      - run: pytest --cov=custom_components
+      - run: python3 -m pytest --cov=custom_components
