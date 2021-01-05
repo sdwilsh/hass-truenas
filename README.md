@@ -37,4 +37,7 @@ pip install -r requirements-dev.txt
 
 # One-Time Install of Commit Hooks
 pre-commit install
+
+# Run tests
+python -m pytest tests
 ```
