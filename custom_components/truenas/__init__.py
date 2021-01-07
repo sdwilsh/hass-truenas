@@ -131,8 +131,12 @@ async def async_migrate_entry(hass: HomeAssistant, config_entry: ConfigEntry) ->
 
     if config_entry.version == 1:
         # Version 1 only accepted username and password auth
-        config_entry.data[CONF_AUTH_MODE] = CONF_AUTH_PASSWORD
-        config_entry.data[CONF_API_KEY] = None
+        data = {**config_entry.data}
+
+        data[CONF_AUTH_MODE] = CONF_AUTH_PASSWORD
+        data[CONF_API_KEY] = None
+
+        config_entry.data = data
 
         config_entry.version = 2
 
