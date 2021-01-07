@@ -13,6 +13,7 @@ from aiotruenas_client.disk import Disk
 from aiotruenas_client.virtualmachine import VirtualMachine
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
+    CONF_API_KEY,
     CONF_HOST,
     CONF_PASSWORD,
     CONF_SCAN_INTERVAL,
@@ -25,7 +26,13 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, Upda
 from homeassistant.util import slugify
 from websockets.exceptions import WebSocketException
 
-from .const import DEFAULT_SCAN_INTERVAL_SECONDS, DOMAIN
+from .const import (
+    CONF_AUTH_API_KEY,
+    CONF_AUTH_MODE,
+    CONF_AUTH_PASSWORD,
+    DEFAULT_SCAN_INTERVAL_SECONDS,
+    DOMAIN,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -47,14 +54,16 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up TrueNAS from a config entry."""
     hass.data.setdefault(DOMAIN, {})
 
-    host = entry.data.get(CONF_HOST)
-    password = entry.data.get(CONF_PASSWORD)
-    username = entry.data.get(CONF_USERNAME)
+    host = entry.data[CONF_HOST]
+    password = entry.data[CONF_PASSWORD]
+    username = entry.data[CONF_USERNAME]
+    api_key = entry.data[CONF_API_KEY]
     try:
         machine = await Machine.create(
             host=host,
             password=password,
             username=username,
+            api_key=api_key,
         )
 
         async def async_update_data():
@@ -114,6 +123,22 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass.data[DOMAIN].pop(entry.entry_id)
 
     return unload_ok
+
+
+async def async_migrate_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
+    """Migrate old entry."""
+    _LOGGER.debug("Migrating from version %s", config_entry.version)
+
+    if config_entry.version == 1:
+        # Version 1 only accepted username and password auth
+        config_entry.data[CONF_AUTH_MODE] = CONF_AUTH_PASSWORD
+        config_entry.data[CONF_API_KEY] = None
+
+        config_entry.version = 2
+
+    _LOGGER.info("Migration to version %s successful", config_entry.version)
+
+    return True
 
 
 class TrueNASEntity(RestoreEntity):

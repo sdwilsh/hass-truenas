@@ -4,6 +4,10 @@ from homeassistant.helpers import config_validation as cv
 
 DOMAIN = "truenas"
 
+CONF_AUTH_MODE = "auth_mode"
+CONF_AUTH_PASSWORD = "Username + Password"
+CONF_AUTH_API_KEY = "API Key"
+
 DEFAULT_SCAN_INTERVAL_SECONDS = 30
 
 SERVICE_VM_START = "vm_start"
