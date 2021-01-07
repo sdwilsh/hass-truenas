@@ -1,23 +1,38 @@
 {
+  "title": "TrueNAS",
   "config": {
-    "abort": {
-      "already_configured": "Already Configured"
+    "step": {
+      "user": {
+          "data": {
+	      "host": "Server Hostname or IP Address",
+	      "name": "Name of the Entity",
+	      "auth_mode": "Authorization method"
+	},
+	  "title": "Configuration for TrueNAS",
+	  "description": "API key authorization is preferred for TrueNAS 12.0+"
+      },
+	"auth_password": {
+	    "data": {
+		"username": "Username",
+		"password": "Password"
+            },
+	    "title": "Username and Password details for TrueNAS"
+	},
+	"auth_api_key": {
+	    "data": {
+		"api_key": "API Key"
+            },
+	    "title": "Username and Password details for TrueNAS"
+	}
+
     },
     "error": {
       "cannot_connect": "Cannot Connect",
       "invalid_auth": "Invalid Auth",
       "unknown": "Unknown Error"
     },
-    "step": {
-      "user": {
-        "data": {
-          "host": "Server Hostname or IP Address",
-          "name": "Name of the Entity",
-          "username": "Username",
-          "password": "Password"
-        }
-      }
+    "abort": {
+      "already_configured": "Already Configured"
     }
-  },
-  "title": "TrueNAS"
+  }
 }
