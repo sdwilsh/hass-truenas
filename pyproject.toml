@@ -1,3 +1,7 @@
 [tool.isort]
 profile = "black"
-src_paths = ["custom_components/truenas"]
+src_paths = [
+    "custom_components/truenas",
+    "scripts",
+    "tests",
+ ]
