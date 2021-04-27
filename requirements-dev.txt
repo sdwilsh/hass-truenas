@@ -1,5 +1,5 @@
-black==20.8b1
-isort==5.6.4
-pre-commit==2.9.3
+black==21.4b0
+isort==5.8.0
+pre-commit==2.12.1
 aiotruenas-client==0.4.0
-pytest-homeassistant-custom-component==0.1.0
+pytest-homeassistant-custom-component==0.3.1
