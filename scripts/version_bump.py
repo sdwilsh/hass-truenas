@@ -123,7 +123,7 @@ Based on {pre_release_rev}
         f"Release branch for v{release_version.major}.{release_version.minor} has been created."
     )
     print(
-        f"Please go to https://github.com/sdwilsh/hass-truenass/releases/new to create a new release for v{release_version.major}.{release_version.minor}."
+        f"Please go to https://github.com/sdwilsh/hass-truenas/releases/new to create a new release for v{release_version.major}.{release_version.minor}."
     )
     subprocess.run(
         ["git", "reset", "--hard", pre_release_rev],
@@ -168,7 +168,7 @@ v{release_version.major}.{release_version.minor} branch has been cut.""",
         capture_output=True,
     )
     print(
-        f"Please go to https://github.com/sdwilsh/aiotruenas-client/pull/new/v{next_version}-version-bump to open a pull request."
+        f"Please go to https://github.com/sdwilsh/hass-truenas/pull/new/v{next_version}-version-bump to open a pull request."
     )
 
 
