@@ -26,3 +26,5 @@ jobs:
           pip install -r requirements-dev.txt
       - name: Pre-commit Lint
         run: pre-commit run --all-files --show-diff-on-failure
+      - name: Pyright Lint
+        run: bash .github/workflows/run_pyright.sh

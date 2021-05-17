@@ -1,6 +1,6 @@
 """Config flow for TrueNAS integration."""
 import logging
-from typing import Dict
+from typing import Any, Dict, Mapping, Optional
 
 import voluptuous as vol
 from aiotruenas_client import CachingMachine as Machine
@@ -74,13 +74,13 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     VERSION = 2
     CONNECTION_CLASS = config_entries.CONN_CLASS_LOCAL_POLL
 
-    _user_data = None
+    _user_data: Dict[str, Any] = {}
 
-    async def async_step_user(self, user_input=None):
+    async def async_step_user(self, user_input: Optional[Mapping[str, Any]] = None):
         """Handle the initial step."""
         errors = {}
         if user_input is not None:
-            self._user_data = user_input
+            self._user_data = dict(user_input)
             if user_input[CONF_AUTH_MODE] == CONF_AUTH_PASSWORD:
                 return await self.async_step_auth_password()
             elif user_input[CONF_AUTH_MODE] == CONF_AUTH_API_KEY:
@@ -89,7 +89,9 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             step_id="user", data_schema=DATA_SCHEMA_USER, errors=errors
         )
 
-    async def async_step_auth_password(self, user_input=None):
+    async def async_step_auth_password(
+        self, user_input: Optional[Mapping[str, Any]] = None
+    ):
         errors = {}
         if user_input is not None:
             self._user_data.update(user_input)
@@ -111,7 +113,9 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             step_id="auth_password", data_schema=DATA_SCHEMA_PASSWORD, errors=errors
         )
 
-    async def async_step_auth_api_key(self, user_input=None):
+    async def async_step_auth_api_key(
+        self, user_input: Optional[Mapping[str, Any]] = None
+    ):
         errors = {}
         if user_input is not None:
             self._user_data.update(user_input)
