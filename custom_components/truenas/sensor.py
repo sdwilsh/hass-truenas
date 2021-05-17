@@ -1,8 +1,9 @@
-from typing import Callable, List, Optional
+from typing import Any, Callable, List, Mapping, Optional
 
 from aiotruenas_client import CachingMachine as Machine
 from aiotruenas_client.disk import Disk, DiskType
 from homeassistant.components.sensor import DEVICE_CLASS_TEMPERATURE
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_NAME, TEMP_CELSIUS
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import entity_platform
@@ -16,7 +17,7 @@ from .const import DOMAIN
 
 async def async_setup_entry(
     hass: HomeAssistant,
-    entry: dict,
+    entry: ConfigEntry,
     async_add_entities: Callable,
 ):
     """Set up the TrueNAS switches."""
@@ -24,13 +25,13 @@ async def async_setup_entry(
     async_add_entities(entities)
 
 
-def _get_machine(hass: HomeAssistant, entry: dict) -> Machine:
+def _get_machine(hass: HomeAssistant, entry: ConfigEntry) -> Machine:
     machine = hass.data[DOMAIN][entry.entry_id]["machine"]
     assert machine is not None
     return machine
 
 
-def _create_entities(hass: HomeAssistant, entry: dict) -> List[Entity]:
+def _create_entities(hass: HomeAssistant, entry: ConfigEntry) -> List[Entity]:
     entities = []
 
     machine = _get_machine(hass, entry)
@@ -47,7 +48,11 @@ class DiskTemperatureSensor(TrueNASDiskEntity, TrueNASSensor, Entity):
     _disk: Disk
 
     def __init__(
-        self, entry: dict, name: str, disk: Disk, coordinator: DataUpdateCoordinator
+        self,
+        entry: ConfigEntry,
+        name: str,
+        disk: Disk,
+        coordinator: DataUpdateCoordinator,
     ) -> None:
         self._disk = disk
         super().__init__(entry, name, coordinator)

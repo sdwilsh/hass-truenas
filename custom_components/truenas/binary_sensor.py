@@ -1,8 +1,12 @@
 from typing import Callable, List, Optional
 
 from aiotruenas_client import CachingMachine as Machine
-from aiotruenas_client.virtualmachine import VirtualMachine, VirtualMachineState
+from aiotruenas_client.websockets.virtualmachine import (
+    CachingVirtualMachine,
+    VirtualMachineState,
+)
 from homeassistant.components.binary_sensor import BinarySensorEntity
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_NAME
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import entity_platform
@@ -24,7 +28,7 @@ from .const import (
 
 async def async_setup_entry(
     hass: HomeAssistant,
-    entry: dict,
+    entry: ConfigEntry,
     async_add_entities: Callable,
 ):
     """Set up the TrueNAS switches."""
@@ -49,13 +53,13 @@ async def async_setup_entry(
     )
 
 
-def _get_machine(hass: HomeAssistant, entry: dict) -> Machine:
+def _get_machine(hass: HomeAssistant, entry: ConfigEntry) -> Machine:
     machine = hass.data[DOMAIN][entry.entry_id]["machine"]
     assert machine is not None
     return machine
 
 
-def _create_entities(hass: HomeAssistant, entry: dict) -> List[Entity]:
+def _create_entities(hass: HomeAssistant, entry: ConfigEntry) -> List[Entity]:
     entities = []
 
     machine = _get_machine(hass, entry)
@@ -75,9 +79,9 @@ class VirturalMachineIsRunningBinarySensor(
 ):
     def __init__(
         self,
-        entry: dict,
+        entry: ConfigEntry,
         name: str,
-        virtural_machine: VirtualMachine,
+        virtural_machine: CachingVirtualMachine,
         coordinator: DataUpdateCoordinator,
     ) -> None:
         self._vm = virtural_machine
