@@ -2,5 +2,5 @@ aiotruenas-client==0.6.0
 black==21.6b0
 isort==5.8.0
 pre-commit==2.13.0
-pytest-homeassistant-custom-component==0.3.2
+pytest-homeassistant-custom-component==0.4.1
 yamllint==1.26.1
