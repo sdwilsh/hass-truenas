@@ -29,7 +29,6 @@ async def test_config_flow_entry_migrate(hass):
         title="somehostname",
         version=1,
         source=SOURCE_USER,
-        connection_class=CONN_CLASS_CLOUD_POLL,
     )
 
     entry.add_to_hass(hass)

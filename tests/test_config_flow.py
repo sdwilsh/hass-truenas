@@ -1,10 +1,16 @@
 """Test the TrueNAS config flow."""
 from unittest.mock import patch
 
+import pytest
 from custom_components.truenas.config_flow import CannotConnect, InvalidAuth
 from custom_components.truenas.const import DOMAIN
 from homeassistant import config_entries, setup
 from websockets.exceptions import InvalidURI, SecurityError
+
+
+@pytest.fixture(autouse=True)
+def auto_enable_custom_integrations(enable_custom_integrations):
+    yield
 
 
 async def test_form_password(hass):
