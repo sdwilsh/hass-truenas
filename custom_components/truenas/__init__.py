@@ -228,7 +228,7 @@ class TrueNASDiskEntity:
 class TrueNASVirtualMachineEntity:
     """Represents a virtual machine on the TrueNAS host."""
 
-    _vm: Optional[CachingVirtualMachine] = None
+    _vm: CachingVirtualMachine
 
     @property
     def available(self) -> bool:
