@@ -36,6 +36,7 @@ async def async_setup_entry(
     async_add_entities(entities)
 
     platform = entity_platform.current_platform.get()
+    assert platform != None
     platform.async_register_entity_service(
         SERVICE_VM_START,
         SCHEMA_SERVICE_VM_START,
