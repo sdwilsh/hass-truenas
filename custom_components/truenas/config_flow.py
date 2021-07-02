@@ -45,7 +45,7 @@ DATA_SCHEMA_API_KEY = vol.Schema(
 )
 
 
-async def validate_input(hass: core.HomeAssistant, data) -> Dict:
+async def validate_input(hass: core.HomeAssistant, data: Dict[str, Any]) -> Dict:
     """Validate the user input allows us to connect.
 
     Data has the keys from DATA_SCHEMA with values provided by the user.
