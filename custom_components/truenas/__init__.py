@@ -10,6 +10,7 @@ import async_timeout
 import voluptuous as vol
 from aiotruenas_client import CachingMachine as Machine
 from aiotruenas_client.websockets.disk import CachingDisk
+from aiotruenas_client.websockets.jail import CachingJail
 from aiotruenas_client.websockets.virtualmachine import CachingVirtualMachine
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
@@ -73,6 +74,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                 try:
                     await asyncio.gather(
                         machine.get_disks(include_temperature=True),
+                        machine.get_jails(),
                         machine.get_vms(),
                     )
                 except Exception as exc:
@@ -223,6 +225,37 @@ class TrueNASDiskEntity:
             "name": self._disk.name,
             "model": self._disk.model,
         }
+
+
+class TrueNASJailEntity:
+    """Represents a jail on the TrueNAS host."""
+
+    _jail: CachingJail
+
+    @property
+    def available(self) -> bool:
+        return self._jail.available
+
+    @property
+    def device_info(self):
+        return {
+            "name": self._jail.name,
+        }
+
+    async def start(self) -> None:
+        """Starts a Jail"""
+        assert self.available
+        await self._jail.start()
+
+    async def stop(self, force: bool = False) -> None:
+        """Starts a Jail"""
+        assert self.available
+        await self._jail.stop(force=force)
+
+    async def restart(self) -> None:
+        """Starts a Jail"""
+        assert self.available
+        await self._jail.restart()
 
 
 class TrueNASVirtualMachineEntity:
