@@ -20,6 +20,12 @@
 
 ## Using Services
 
+### truenas.jail_start
+
+### truenas.jail_stop
+
+### truenas.jail_restart
+
 ### truenas.vm_start
 
 ### truenas.vm_stop
