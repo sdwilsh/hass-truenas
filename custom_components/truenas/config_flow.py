@@ -63,6 +63,7 @@ async def validate_input(hass: core.HomeAssistant, data: Dict[str, Any]) -> Dict
         raise CannotConnect from exc
 
     info = await machine.get_system_info()
+    await machine.close()
     return {
         "hostname": info["hostname"],
     }
