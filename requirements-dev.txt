@@ -4,4 +4,4 @@ isort==5.9.3
 pre-commit==2.13.0
 pytest==6.2.4
 pytest-homeassistant-custom-component==0.4.3
-yamllint==1.26.1
+yamllint==1.26.2
