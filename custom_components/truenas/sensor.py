@@ -2,6 +2,7 @@ from typing import Any, Callable, List, Mapping, Optional
 
 from aiotruenas_client import CachingMachine as Machine
 from aiotruenas_client.disk import Disk, DiskType
+from aiotruenas_client.pool import Pool
 from homeassistant.components.sensor import DEVICE_CLASS_TEMPERATURE
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_NAME, TEMP_CELSIUS
@@ -11,7 +12,7 @@ from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.util import slugify
 
-from . import TrueNASDiskEntity, TrueNASSensor
+from . import TrueNASDiskEntity, TrueNASPoolEntity, TrueNASSensor
 from .const import DOMAIN
 
 
@@ -40,6 +41,9 @@ def _create_entities(hass: HomeAssistant, entry: ConfigEntry) -> List[Entity]:
 
     for disk in machine.disks:
         entities.append(DiskTemperatureSensor(entry, name, disk, coordinator))
+
+    for pool in machine.pools:
+        entities.append(PoolSensor(entry, name, pool, coordinator))
 
     return entities
 
@@ -88,3 +92,63 @@ class DiskTemperatureSensor(TrueNASDiskEntity, TrueNASSensor, Entity):
         if self.available:
             return self._disk.temperature
         return None
+
+
+class PoolSensor(TrueNASPoolEntity, TrueNASSensor, Entity):
+    _pool: Pool
+
+    def __init__(
+        self,
+        entry: ConfigEntry,
+        name: str,
+        pool: Pool,
+        coordinator: DataUpdateCoordinator,
+    ) -> None:
+        self._pool = pool
+        super().__init__(entry, name, coordinator)
+
+    @property
+    def name(self) -> str:
+        """Return the name of the pool."""
+        return self._pool.name
+
+    @property
+    def unique_id(self):
+        """Return the Unique ID of the pool."""
+        return self._pool.guid
+
+    @property
+    def id(self) -> int:
+        """Return the ID of the pool."""
+        return self._pool.id
+
+    @property
+    def status(self):
+        """Return the status of the pool."""
+        return self._pool.status.name
+
+    @property
+    def icon(self):
+        """Return an icon for the pool."""
+        return "mdi:database"
+
+    @property
+    def encrypt(self):
+        """Returns True (1) if the pool is encrypted."""
+        return self._pool.encrypt
+
+    @property
+    def is_decrypted(self):
+        """Returns state of decryption for the pool."""
+        return self._pool.is_decrypted
+
+    @property
+    def topology(self):
+        """Returns topology of the pool."""
+        return self._pool.topology
+
+    def _get_state(self):
+        """Returns the current status of the pool."""
+        if not isinstance:
+            return None
+        return self._pool.status.name
