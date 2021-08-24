@@ -110,7 +110,7 @@ class PoolSensor(TrueNASPoolEntity, TrueNASSensor, Entity):
     @property
     def name(self) -> str:
         """Return the name of the pool."""
-        return self._pool.name
+        return f"Pool {self._pool.name}"
 
     @property
     def unique_id(self):
@@ -123,29 +123,9 @@ class PoolSensor(TrueNASPoolEntity, TrueNASSensor, Entity):
         return self._pool.id
 
     @property
-    def status(self):
-        """Return the status of the pool."""
-        return self._pool.status.name
-
-    @property
     def icon(self):
         """Return an icon for the pool."""
         return "mdi:database"
-
-    @property
-    def encrypt(self):
-        """Returns True (1) if the pool is encrypted."""
-        return self._pool.encrypt
-
-    @property
-    def is_decrypted(self):
-        """Returns state of decryption for the pool."""
-        return self._pool.is_decrypted
-
-    @property
-    def topology(self):
-        """Returns topology of the pool."""
-        return self._pool.topology
 
     def _get_state(self):
         """Returns the current status of the pool."""

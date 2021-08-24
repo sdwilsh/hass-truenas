@@ -46,6 +46,11 @@ PLATFORMS = [
 ]
 TIMEOUT = 10
 
+ATTR_ENCRYPT = "Encrypted"
+ATTR_IS_DECRYPTED = "Is decrypted"
+ATTR_POOL_NAME = "Pool Name"
+ATTR_POOL_ID = "ID"
+
 
 async def async_setup(hass: HomeAssistant, config: dict) -> bool:
     """Set up the TrueNAS component."""
@@ -235,16 +240,24 @@ class TrueNASPoolEntity:
     _pool: CachingPool
 
     @property
-    def available(self) -> bool:
-        return self._pool.available
-
-    @property
     def device_info(self):
         return {
             "identifiers": {
                 (DOMAIN, self._pool.guid),
             },
             "name": f"TrueNAS Pool - {self._pool.name}",
+        }
+
+    @property
+    def extra_state_attributes(self):
+        """Return extra Pool attributes"""
+        encryption = bool(self._pool.encrypt)
+        is_decrypted = bool(self._pool.is_decrypted)
+        return {
+            ATTR_POOL_NAME: f"{self._pool.name}",
+            ATTR_POOL_ID: f"{self._pool.id}",
+            ATTR_ENCRYPT: encryption,
+            ATTR_IS_DECRYPTED: is_decrypted,
         }
 
 
