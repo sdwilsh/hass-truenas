@@ -4,6 +4,11 @@ from homeassistant.helpers import config_validation as cv
 
 DOMAIN = "truenas"
 
+ATTR_ENCRYPT = "Encrypted"
+ATTR_IS_DECRYPTED = "Is decrypted"
+ATTR_POOL_ID = "ID"
+ATTR_POOL_NAME = "Pool Name"
+
 CONF_AUTH_MODE = "auth_mode"
 CONF_AUTH_PASSWORD = "Username + Password"
 CONF_AUTH_API_KEY = "API Key"
