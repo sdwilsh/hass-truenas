@@ -29,6 +29,10 @@ from homeassistant.util import slugify
 from websockets.exceptions import WebSocketException
 
 from .const import (
+    ATTR_ENCRYPT,
+    ATTR_IS_DECRYPTED,
+    ATTR_POOL_ID,
+    ATTR_POOL_NAME,
     CONF_AUTH_API_KEY,
     CONF_AUTH_MODE,
     CONF_AUTH_PASSWORD,
@@ -45,11 +49,6 @@ PLATFORMS = [
     "sensor",
 ]
 TIMEOUT = 10
-
-ATTR_ENCRYPT = "Encrypted"
-ATTR_IS_DECRYPTED = "Is decrypted"
-ATTR_POOL_NAME = "Pool Name"
-ATTR_POOL_ID = "ID"
 
 
 async def async_setup(hass: HomeAssistant, config: dict) -> bool:
@@ -81,8 +80,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                     await asyncio.gather(
                         machine.get_disks(include_temperature=True),
                         machine.get_jails(),
-                        machine.get_vms(),
                         machine.get_pools(),
+                        machine.get_vms(),
                     )
                 except Exception as exc:
                     raise UpdateFailed("Error fetching TrueNAS state") from exc
@@ -237,27 +236,32 @@ class TrueNASDiskEntity:
 class TrueNASPoolEntity:
     """Represents a pool on the TrueNAS host."""
 
-    _pool: CachingPool
+    _pool: Optional[CachingPool] = None
+
+    @property
+    def available(self) -> bool:
+        assert self._pool is not None
+        return self._pool.available
 
     @property
     def device_info(self):
+        assert self._pool is not None
         return {
             "identifiers": {
-                (DOMAIN, self._pool.guid),
+                (DOMAIN, slugify(self._pool.guid)),
             },
-            "name": f"TrueNAS Pool - {self._pool.name}",
+            "name": self._pool.name,
+            "manufacturer": f"TrueNAS",
         }
 
     @property
     def extra_state_attributes(self):
         """Return extra Pool attributes"""
+        assert self._pool is not None
         encryption = bool(self._pool.encrypt)
-        is_decrypted = bool(self._pool.is_decrypted)
         return {
             ATTR_POOL_NAME: f"{self._pool.name}",
-            ATTR_POOL_ID: f"{self._pool.id}",
             ATTR_ENCRYPT: encryption,
-            ATTR_IS_DECRYPTED: is_decrypted,
         }
 
 

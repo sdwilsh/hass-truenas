@@ -110,12 +110,12 @@ class PoolSensor(TrueNASPoolEntity, TrueNASSensor, Entity):
     @property
     def name(self) -> str:
         """Return the name of the pool."""
-        return f"Pool {self._pool.name}"
+        return f"{self._pool.name} Pool"
 
     @property
     def unique_id(self):
         """Return the Unique ID of the pool."""
-        return self._pool.guid
+        return slugify(self._pool.guid)
 
     @property
     def id(self) -> int:
