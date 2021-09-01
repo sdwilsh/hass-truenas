@@ -29,10 +29,6 @@ from homeassistant.util import slugify
 from websockets.exceptions import WebSocketException
 
 from .const import (
-    ATTR_ENCRYPT,
-    ATTR_IS_DECRYPTED,
-    ATTR_POOL_ID,
-    ATTR_POOL_NAME,
     CONF_AUTH_API_KEY,
     CONF_AUTH_MODE,
     CONF_AUTH_PASSWORD,
@@ -255,14 +251,9 @@ class TrueNASPoolEntity:
         }
 
     @property
-    def extra_state_attributes(self):
-        """Return extra Pool attributes"""
+    def unique_id(self):
         assert self._pool is not None
-        encryption = bool(self._pool.encrypt)
-        return {
-            ATTR_POOL_NAME: f"{self._pool.name}",
-            ATTR_ENCRYPT: encryption,
-        }
+        return self._pool.guid
 
 
 class TrueNASJailEntity:

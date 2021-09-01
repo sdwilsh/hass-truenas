@@ -1,5 +1,7 @@
 {
-  "codeowners": ["@sdwilsh"],
+  "codeowners": [
+    "@sdwilsh"
+  ],
   "config_flow": true,
   "dependencies": [],
   "documentation": "https://github.com/sdwilsh/hass-truenas",
