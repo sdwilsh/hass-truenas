@@ -9,7 +9,9 @@
   "homekit": {},
   "iot_class": "local_polling",
   "name": "TrueNAS",
-  "requirements": ["aiotruenas-client==0.7.0"],
+  "requirements": [
+    "aiotruenas-client==0.7.0"
+  ],
   "ssdp": [],
   "version": "0.3.0a0",
   "zeroconf": []

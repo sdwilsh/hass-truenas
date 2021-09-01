@@ -1,9 +1,7 @@
 from typing import Callable, List, Optional
 
 from aiotruenas_client import CachingMachine as Machine
-from aiotruenas_client.pool import PoolStatus
 from aiotruenas_client.websockets.jail import CachingJail, JailStatus
-from aiotruenas_client.websockets.pool import CachingPool
 from aiotruenas_client.websockets.virtualmachine import (
     CachingVirtualMachine,
     VirtualMachineState,
