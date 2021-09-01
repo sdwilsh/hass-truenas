@@ -17,12 +17,7 @@ from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.util import slugify
 
-from . import (
-    TrueNASBinarySensor,
-    TrueNASJailEntity,
-    TrueNASPoolEntity,
-    TrueNASVirtualMachineEntity,
-)
+from . import TrueNASBinarySensor, TrueNASJailEntity, TrueNASVirtualMachineEntity
 from .const import (
     DOMAIN,
     SCHEMA_SERVICE_JAIL_RESTART,
@@ -102,8 +97,6 @@ def _create_entities(hass: HomeAssistant, entry: ConfigEntry) -> List[Entity]:
         entities.append(
             VirturalMachineIsRunningBinarySensor(entry, name, vm, coordinator)
         )
-    for pool in machine.pools:
-        entities.append(PoolIsDecryptedBinarySensor(entry, name, pool, coordinator))
 
     return entities
 
@@ -142,45 +135,6 @@ class JailIsRunningBinarySensor(
         if self._jail.available:
             return self._jail.status == JailStatus.UP
         return None
-
-
-class PoolIsDecryptedBinarySensor(
-    TrueNASPoolEntity, TrueNASBinarySensor, BinarySensorEntity
-):
-    def __init__(
-        self,
-        entry: ConfigEntry,
-        name: str,
-        pool: CachingPool,
-        coordinator: DataUpdateCoordinator,
-    ) -> None:
-        self._pool = pool
-        super().__init__(entry, name, coordinator)
-
-    @property
-    def name(self) -> str:
-        """Return the pool decryption status"""
-        assert self._pool is not None
-        return f"{self._pool.name} Pool Is Decrypted"
-
-    @property
-    def unique_id(self):
-        assert self._pool is not None
-        return f"{self._pool.name}_is_decrypted_binary_sensor"
-
-    @property
-    def icon(self) -> str:
-        """Return an icon for the pool."""
-        return "mdi:database"
-
-    @property
-    def entity_registry_enabled_default(self) -> bool:
-        return False
-
-    def _get_state(self) -> Optional[bool]:
-        """Returns the current encryption status of the pool."""
-        assert self._pool is not None
-        return self._pool.is_decrypted
 
 
 class VirturalMachineIsRunningBinarySensor(

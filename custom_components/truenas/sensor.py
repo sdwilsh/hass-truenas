@@ -13,7 +13,7 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.util import slugify
 
 from . import TrueNASDiskEntity, TrueNASPoolEntity, TrueNASSensor
-from .const import DOMAIN
+from .const import ATTR_POOL_GUID, ATTR_POOL_NAME, DOMAIN
 
 
 async def async_setup_entry(
@@ -118,9 +118,13 @@ class PoolSensor(TrueNASPoolEntity, TrueNASSensor, Entity):
         return slugify(self._pool.guid)
 
     @property
-    def id(self) -> int:
-        """Return the ID of the pool."""
-        return self._pool.id
+    def extra_state_attributes(self):
+        """Return extra Pool attributes"""
+        assert self._pool is not None
+        return {
+            ATTR_POOL_NAME: f"{self._pool.name}",
+            ATTR_POOL_GUID: f"{self._pool.guid}",
+        }
 
     @property
     def icon(self):
@@ -128,7 +132,7 @@ class PoolSensor(TrueNASPoolEntity, TrueNASSensor, Entity):
         return "mdi:database"
 
     def _get_state(self):
-        """Returns the current status of the pool."""
+        """Returns the current state of the pool."""
         if not isinstance:
             return None
         return self._pool.status.name
