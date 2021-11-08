@@ -1,6 +1,6 @@
 aiotruenas-client==0.8.0
 black==21.9b0
-isort==5.9.3
+isort==5.10.0
 pre-commit==2.15.0
 pytest==6.2.4
 pytest-homeassistant-custom-component==0.4.4
