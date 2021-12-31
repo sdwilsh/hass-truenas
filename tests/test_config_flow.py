@@ -168,7 +168,7 @@ async def test_form_cannot_connect(hass):
 
     with patch(
         "custom_components.truenas.config_flow.Machine.create",
-        side_effect=InvalidURI("invalid_uri"),
+        side_effect=InvalidURI(uri="1.1.1.1", msg="invalid_uri"),
     ):
         result2 = await hass.config_entries.flow.async_configure(
             result["flow_id"],
