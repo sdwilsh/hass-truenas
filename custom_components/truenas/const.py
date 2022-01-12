@@ -6,6 +6,7 @@ DOMAIN = "truenas"
 
 ATTR_ENCRYPT = "Encrypted"
 ATTR_POOL_GUID = "GUID"
+ATTR_POOL_IS_DECRYPTED = "Is Decrypted"
 ATTR_POOL_NAME = "Pool Name"
 
 CONF_AUTH_MODE = "auth_mode"
