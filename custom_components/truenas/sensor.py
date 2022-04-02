@@ -3,12 +3,11 @@ from typing import Any, Callable, List, Mapping, Optional
 from aiotruenas_client import CachingMachine as Machine
 from aiotruenas_client.disk import Disk, DiskType
 from aiotruenas_client.pool import Pool
-from homeassistant.components.sensor import DEVICE_CLASS_TEMPERATURE
+from homeassistant.components.sensor import DEVICE_CLASS_TEMPERATURE, SensorEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_NAME, TEMP_CELSIUS
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import entity_platform
-from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.util import slugify
 
@@ -38,7 +37,7 @@ def _get_machine(hass: HomeAssistant, entry: ConfigEntry) -> Machine:
     return machine
 
 
-def _create_entities(hass: HomeAssistant, entry: ConfigEntry) -> List[Entity]:
+def _create_entities(hass: HomeAssistant, entry: ConfigEntry) -> List[SensorEntity]:
     entities = []
 
     machine = _get_machine(hass, entry)
@@ -54,7 +53,7 @@ def _create_entities(hass: HomeAssistant, entry: ConfigEntry) -> List[Entity]:
     return entities
 
 
-class DiskTemperatureSensor(TrueNASDiskEntity, TrueNASSensor, Entity):
+class DiskTemperatureSensor(TrueNASDiskEntity, TrueNASSensor, SensorEntity):
     _disk: Disk
 
     def __init__(
@@ -100,7 +99,7 @@ class DiskTemperatureSensor(TrueNASDiskEntity, TrueNASSensor, Entity):
         return None
 
 
-class PoolSensor(TrueNASPoolEntity, TrueNASSensor, Entity):
+class PoolSensor(TrueNASPoolEntity, TrueNASSensor, SensorEntity):
     _pool: Pool
 
     def __init__(
