@@ -1,14 +1,14 @@
 {
+  "domain": "truenas",
+  "name": "TrueNAS",
   "codeowners": [
     "@sdwilsh"
   ],
   "config_flow": true,
   "dependencies": [],
   "documentation": "https://github.com/sdwilsh/hass-truenas",
-  "domain": "truenas",
   "homekit": {},
   "iot_class": "local_polling",
-  "name": "TrueNAS",
   "requirements": [
     "aiotruenas-client==0.9.0"
   ],
