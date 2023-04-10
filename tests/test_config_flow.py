@@ -30,7 +30,6 @@ async def test_form_password(hass):
         "custom_components.truenas.async_setup_entry",
         return_value=True,
     ) as mock_setup_entry:
-
         mock_machine.return_value.get_system_info.return_value = {
             "hostname": "somehostname"
         }
@@ -89,7 +88,6 @@ async def test_form_api_key(hass):
         "custom_components.truenas.async_setup_entry",
         return_value=True,
     ) as mock_setup_entry:
-
         mock_machine.return_value.get_system_info.return_value = {
             "hostname": "somehostname"
         }
