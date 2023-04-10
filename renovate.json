@@ -16,6 +16,14 @@
       "matchStrings": [
         "#\\srenovate:\\sdatasource=(?<datasource>.*?)\\sdepName=(?<depName>.*?)\\n\\s+rev:\\s\\\"?v?(?<currentValue>.*?)\\\"?\\s"
       ]
+    },
+    {
+      "fileMatch": [
+        "^custom_components/truenas/manifest.json$"
+      ],
+      "matchStrings": [
+        "\\s+\"(?<depName>.*?)==(?<currentValue>.*?)\",?\\n"
+      ]
     }
   ]
 }
