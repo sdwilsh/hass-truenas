@@ -18,6 +18,7 @@
       ]
     },
     {
+      "datasourceTemplate": "pypi",
       "fileMatch": [
         "^custom_components/truenas/manifest.json$"
       ],
