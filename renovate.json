@@ -2,5 +2,20 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:base"
+  ],
+  "pip_requirements": {
+    "fileMatch": [
+      "(^|/)requirements(-.*)?.txt$"
+    ]
+  },
+  "regexManagers": [
+    {
+      "fileMatch": [
+        "^.pre-commit-config.yaml$"
+      ],
+      "matchStrings": [
+        "#\\srenovate:\\sdatasource=(?<datasource>.*?)\\sdepName=(?<depName>.*?)\\n\\s+rev:\\s\\\"?v?(?<currentValue>.*?)\\\"?\\s"
+      ]
+    }
   ]
 }

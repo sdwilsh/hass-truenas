@@ -1,8 +1,0 @@
----
-- match:
-    dependency_name: "pytest-homeassistant-custom-component"
-    dependency_type: "all"
-    update_type: "all"
-- match:
-    dependency_type: "production"
-    update_type: "semver:minor"
