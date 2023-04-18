@@ -3,5 +3,5 @@ black==23.3.0
 flake8==6.0.0
 isort==5.12.0
 pre-commit==3.2.2
-pytest-homeassistant-custom-component==0.13.21
+pytest-homeassistant-custom-component==0.13.22
 yamllint==1.30.0
