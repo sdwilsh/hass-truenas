@@ -1,49 +1,34 @@
 ---
-jail_start:
-  description: Start a jail
+jail_restart:
   fields:
     entity_id:
-      description: Sensor entity id for jail
-      example: "binary_sensor.jail_name"
+      example: binary_sensor.jail_name
+
+jail_start:
+  fields:
+    entity_id:
+      example: binary_sensor.jail_name
 
 jail_stop:
-  description: Stop a jail
   fields:
     entity_id:
-      description: Sensor entity id for jail
-      example: "binary_sensor.jail_name"
+      example: binary_sensor.jail_name
 
-jail_restart:
-  description: Restart a jail
+vm_restart:
   fields:
     entity_id:
-      description: Sensor entity id for jail
-      example: "binary_sensor.jail_name"
+      example: binary_sensor.virtural_machine_name
 
 vm_start:
-  description: Start a virtural machine
   fields:
     entity_id:
-      description: Sensor entity id for virtural machine
-      example: "binary_sensor.virtural_machine_name"
+      example: binary_sensor.virtural_machine_name
     overcommit:
-      description: >
-        Start the virtural machine even if there is not enough memory available
       example: false
 
 vm_stop:
-  description: Stop a virtural machine
   fields:
     entity_id:
-      description: Sensor entity id for virtural machine
       example: "binary_sensor.virtural_machine_name"
     force:
-      description: Perform a non-graceful shutdown
       example: false
-
-vm_restart:
-  description: Restart a virtural machine
-  fields:
-    entity_id:
-      description: Sensor entity id for virtural machine
-      example: "binary_sensor.virtural_machine_name"

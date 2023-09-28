@@ -32,5 +32,75 @@
     "abort": {
       "already_configured": "Already Configured"
     }
+  },
+  "services": {
+    "jail_restart": {
+      "name": "Restart Jail",
+      "description": "Restarts a jail on a TrueNAS system.",
+      "fields": {
+        "entity_id": {
+          "name": "Entity",
+          "description": "Sensor entity for the jail."
+        }
+      }
+    },
+    "jail_start": {
+      "name": "Start Jail",
+      "description": "Starts a jail on a TrueNAS system.",
+      "fields": {
+        "entity_id": {
+          "name": "Entity",
+          "description": "Sensor entity for the jail."
+        }
+      }
+    },
+    "jail_stop": {
+      "name": "Stop Jail",
+      "description": "Stops a jail on a TrueNAS system.",
+      "fields": {
+        "entity_id": {
+          "name": "Entity",
+          "description": "Sensor entity for the jail."
+        }
+      }
+    },
+    "vm_restart": {
+      "name": "Restart VM",
+      "description": "Restarts a virtual machine on a TrueNAS system.",
+      "fields": {
+        "entity_id": {
+          "name": "Entity",
+          "description": "Sensor entity for the VM."
+        }
+      }
+    },
+    "vm_start": {
+      "name": "Start VM",
+      "description": "Starts a virtual machine on a TrueNAS system.",
+      "fields": {
+        "entity_id": {
+          "name": "Entity",
+          "description": "Sensor entity for the VM."
+        },
+        "overcommit": {
+          "name": "Overcommit",
+          "description": "Start the virtual machine even if there is not enough memory available."
+        }
+      }
+    },
+    "vm_stop": {
+      "name": "Stop VM",
+      "description": "Stops a Virtual Machine on a TrueNAS system.",
+      "fields": {
+        "entity_id": {
+          "name": "Entity",
+          "description": "Sensor entity for the VM."
+        },
+        "force": {
+          "name": "Force",
+          "description": "Perform a non-graceful shutdown of the virtual machine."
+        }
+      }
+    }
   }
 }
