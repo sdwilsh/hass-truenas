@@ -18,6 +18,7 @@ from .const import (  # pylint:disable=unused-import
     CONF_AUTH_API_KEY,
     CONF_AUTH_MODE,
     CONF_AUTH_PASSWORD,
+    DEFAULT_NAME,
     DOMAIN,
 )
 
@@ -27,7 +28,7 @@ DATA_SCHEMA_USER = vol.Schema(
     {
         vol.Required(CONF_HOST): str,
         vol.Required(CONF_AUTH_MODE): vol.In([CONF_AUTH_PASSWORD, CONF_AUTH_API_KEY]),
-        vol.Optional(CONF_NAME, default="TrueNAS"): str,
+        vol.Optional(CONF_NAME, default=DEFAULT_NAME): str,  # type: ignore
     }
 )
 
